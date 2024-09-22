@@ -1,5 +1,5 @@
-import { EntityManager } from "@mikro-orm/sqlite";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
+import { EntityManager } from "typeorm";
 
 export class GetTodoItemPaginationQuery {
   constructor(

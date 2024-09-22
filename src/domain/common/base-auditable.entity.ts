@@ -1,13 +1,13 @@
-import { Property } from "@mikro-orm/core";
+import { Column } from "typeorm";
 import { BaseEntity } from "./base.entity";
 
 export abstract class BaseAuditableEntity extends BaseEntity {
-  @Property()
+  @Column()
   created: Date;
-  @Property()
+  @Column()
   createdBy: string;
-  @Property()
+  @Column()
   lastModified: Date;
-  @Property()
+  @Column()
   lastModifiedBy: string;
 }

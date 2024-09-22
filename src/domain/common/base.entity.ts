@@ -1,10 +1,9 @@
-import { Entity, PrimaryKey } from "@mikro-orm/core";
 import { v4 } from "uuid";
 import { BaseEvent } from "./base-event";
+import { PrimaryColumn } from "typeorm";
 
-@Entity()
 export abstract class BaseEntity {
-  @PrimaryKey()
+  @PrimaryColumn()
   id: string = v4();
 
   private _domainEvents = [];
