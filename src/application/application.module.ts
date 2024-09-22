@@ -1,16 +1,17 @@
 import { AutomapperModule } from "@automapper/nestjs";
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { MapperProfile } from "./common/mappings/mapper-profile";
-import { CqrsModule } from "@nestjs/cqrs";
-import { CreateTodoItemCommand } from "./todo-items/commands/create-todo-item";
-import { RemoveTodoItemCommand } from "./todo-items/commands/remove-todo-item";
-import { GetTodoItemPaginationQuery } from "./todo-items/queries/get-todo-item-pagination";
+import { CreateTodoItemHandler } from "./todo-items/commands/create-todo-item";
+import { RemoveTodoItemHandler } from "./todo-items/commands/remove-todo-item";
+import { GetTodoItemPaginationHandler } from "./todo-items/queries/get-todo-item-pagination";
 import { classes } from "@automapper/classes";
 import { LoggerMiddleware } from "./common/middlewares/logger.middleware";
 import { PerformanceMiddleware } from "./common/middlewares/performance.middleware";
+import { InfrastructureModule } from "src/infrastructure/infrastructure.module";
+import { DomainModule } from "src/domain/domain.module";
 
-export const CommandHandlers = [CreateTodoItemCommand, RemoveTodoItemCommand];
-export const QueryHandlers = [GetTodoItemPaginationQuery];
+export const CommandHandlers = [CreateTodoItemHandler, RemoveTodoItemHandler];
+export const QueryHandlers = [GetTodoItemPaginationHandler];
 export const EventHandlers = [];
 
 @Module({
@@ -18,7 +19,8 @@ export const EventHandlers = [];
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
     }),
-    CqrsModule,
+    DomainModule,
+    InfrastructureModule,
   ],
   providers: [
     MapperProfile,
@@ -26,7 +28,12 @@ export const EventHandlers = [];
     ...QueryHandlers,
     ...EventHandlers,
   ],
-  exports: [CqrsModule],
+  exports: [
+    InfrastructureModule,
+    ...CommandHandlers,
+    ...QueryHandlers,
+    ...EventHandlers,
+  ],
 })
 export class ApplicationModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,12 +1,17 @@
 import { Module } from "@nestjs/common";
 import { ApplicationModule } from "./application/application.module";
-import { InfrastructureModule } from "./infrastructure/infrastructure.module";
 import { TodoItemController } from "./presentation/controllers/todo-item.controller";
-import { DomainModule } from "./domain/domain.module";
+import { CurrentUser } from "./presentation/services/current-user.service";
+import { IUser } from "./application/common/interfaces/user.interface";
 
 @Module({
-  imports: [DomainModule, ApplicationModule, InfrastructureModule],
+  imports: [ApplicationModule],
   controllers: [TodoItemController],
-  providers: [],
+  providers: [
+    {
+      provide: IUser,
+      useClass: CurrentUser,
+    },
+  ],
 })
 export class AppModule {}

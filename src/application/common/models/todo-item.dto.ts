@@ -1,7 +1,10 @@
+import { AutoMap } from "@automapper/classes";
+
 export class TodoItemDto {
-  constructor(
-    public readonly id: string,
-    public readonly listId: string,
-    public readonly title?: string,
-  ) {}
+  @AutoMap()
+  id: string;
+  @AutoMap()
+  listId: string;
+  @AutoMap()
+  title?: string;
 }

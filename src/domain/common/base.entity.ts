@@ -1,9 +1,11 @@
 import { v4 } from "uuid";
 import { BaseEvent } from "./base-event";
 import { PrimaryColumn } from "typeorm";
+import { AutoMap } from "@automapper/classes";
 
 export abstract class BaseEntity {
   @PrimaryColumn()
+  @AutoMap()
   id: string = v4();
 
   private _domainEvents = [];
