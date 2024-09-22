@@ -1,17 +1,26 @@
-import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { SqliteDriver } from "@mikro-orm/sqlite";
-import { Module } from "@nestjs/common";
+
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 @Module({
   imports: [
-    MikroOrmModule.forRoot({
-      entities: ["dist/**/*.entity.js"],
-      entitiesTs: ["src/**/*.entity.ts"],
-      dbName: "my-db-name.sqlite3",
-      tsNode: true,
-      driver: SqliteDriver,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      entities: [],
+      synchronize: true,
     }),
   ],
-  providers: [],
 })
+
+
 export class InfrastructureModule {}
+
+

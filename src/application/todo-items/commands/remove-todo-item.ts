@@ -1,7 +1,8 @@
-import { EntityManager } from "@mikro-orm/sqlite";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { EntityManager } from "typeorm";
 import { TodoItem } from "src/domain/entities/todo-item.entity";
 import { TodoItemDeletedEvent } from "src/domain/events/todo-item/deleted.event";
+
 
 export class RemoveTodoItemCommand {
   constructor(public readonly id: string) {}
@@ -13,13 +14,13 @@ export class RemoveTodoItemHandler
 {
   constructor(private readonly em: EntityManager) {}
 
-  async execute(command: RemoveTodoItemCommand): Promise<any> {
+  async execute(command: RemoveTodoItemCommand): Promise<void> {
     const entity = await this.em.findOneOrFail(TodoItem, {
-      id: command.id,
+      where: { id: command.id },
     });
 
-    this.em.remove(entity);
+    await this.em.remove(entity);
     entity.addDomainEvent(new TodoItemDeletedEvent(entity));
-    await this.em.flush();
+    return;
   }
 }
