@@ -1,6 +1,6 @@
-import { EntityManager } from "@mikro-orm/sqlite";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { TodoItem } from "src/domain/entities/todo-item.entity";
+import { EntityManager } from "typeorm";
 
 export class UpdateTodoItemCommand {
   constructor(
@@ -15,12 +15,18 @@ export class UpdateTodoItemHandler
 {
   constructor(private readonly em: EntityManager) {}
 
-  async execute(command: UpdateTodoItemCommand): Promise<any> {
+  async execute(command: UpdateTodoItemCommand): Promise<TodoItem> {
     const entity = await this.em.findOneOrFail(TodoItem, {
-      id: command.id,
+      where: { id: command.id },
     });
 
-    entity.title = command.title;
-    await this.em.persistAndFlush(entity);
+    
+    if (command.title) {
+      entity.title = command.title;
+    }
+
+    await this.em.save(entity);
+    
+    return entity; 
   }
 }
