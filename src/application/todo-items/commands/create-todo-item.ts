@@ -1,6 +1,6 @@
-import { EntityManager } from "@mikro-orm/sqlite";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { TodoItem } from "src/domain/entities/todo-item.entity";
+import { EntityManager } from "typeorm";
 
 export class CreateTodoItemCommand {
   constructor(
@@ -19,7 +19,6 @@ export class CreateTodoItemHandler
       listId: command.listId,
       title: command.title,
     });
-    await this.em.flush();
     return todoItem.id;
   }
 }

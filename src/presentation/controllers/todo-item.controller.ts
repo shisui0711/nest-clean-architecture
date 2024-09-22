@@ -1,4 +1,4 @@
-import { Controller } from "@nestjs/common";
+import { Body, Controller } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { CreateTodoItemCommand } from "src/application/todo-items/commands/create-todo-item";
 import { RemoveTodoItemCommand } from "src/application/todo-items/commands/remove-todo-item";
@@ -10,15 +10,15 @@ export class TodoItemController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
-  createTodoItem(command: CreateTodoItemCommand) {
+  createTodoItem(@Body() command: CreateTodoItemCommand) {
     this.commandBus.execute(command);
   }
 
-  removeTodoItem(command: RemoveTodoItemCommand) {
+  removeTodoItem(@Body() command: RemoveTodoItemCommand) {
     this.commandBus.execute(command);
   }
 
-  getTodoItemPagination(query: GetTodoItemPaginationQuery) {
+  getTodoItemPagination(@Body() query: GetTodoItemPaginationQuery) {
     this.queryBus.execute(query);
   }
 }

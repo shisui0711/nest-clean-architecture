@@ -1,20 +1,20 @@
-import { Entity, ManyToOne, Property } from "@mikro-orm/core";
+import { Column, Entity, ManyToOne } from "typeorm";
 import { BaseAuditableEntity } from "../common/base-auditable.entity";
 import { PriorityLevel } from "../enums/priority-level";
 import { TodoList } from "./todo-list.entity";
 
 @Entity()
 export class TodoItem extends BaseAuditableEntity {
-  @Property()
+  @Column()
   listId: string;
-  @Property()
+  @Column()
   title?: string;
-  @Property()
+  @Column()
   note: string;
-  @Property()
+  @Column()
   priority: PriorityLevel;
-  @Property()
+  @Column()
   reminder: Date;
-  @ManyToOne<TodoList, TodoItem>(() => TodoList)
+  @ManyToOne(() => TodoList, (todoList) => todoList.items)
   list: TodoList;
 }
