@@ -1,11 +1,13 @@
 import { AutomapperModule } from "@automapper/nestjs";
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { MapperProfile } from "./common/mappings/mapper-profile";
 import { CqrsModule } from "@nestjs/cqrs";
 import { CreateTodoItemCommand } from "./todo-items/commands/create-todo-item";
 import { RemoveTodoItemCommand } from "./todo-items/commands/remove-todo-item";
 import { GetTodoItemPaginationQuery } from "./todo-items/queries/get-todo-item-pagination";
 import { classes } from "@automapper/classes";
+import { LoggerMiddleware } from "./common/middlewares/logger.middleware";
+import { PerformanceMiddleware } from "./common/middlewares/performance.middleware";
 
 export const CommandHandlers = [CreateTodoItemCommand, RemoveTodoItemCommand];
 export const QueryHandlers = [GetTodoItemPaginationQuery];
@@ -26,4 +28,9 @@ export const EventHandlers = [];
   ],
   exports: [CqrsModule],
 })
-export class ApplicationModule {}
+export class ApplicationModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes("*");
+    consumer.apply(PerformanceMiddleware).forRoutes("*");
+  }
+}
