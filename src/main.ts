@@ -4,8 +4,10 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ["error", "warn"],
+    // logger: ["error", "warn", "log", "debug"],
   });
+
+  app.setGlobalPrefix("/api/v1");
 
   //Config swagger
   const config = new DocumentBuilder()

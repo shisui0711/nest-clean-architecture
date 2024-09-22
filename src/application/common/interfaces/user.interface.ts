@@ -1,3 +1,3 @@
-export interface IUser {
-  id: string;
+export abstract class IUser {
+  abstract getCurrentUser(): string;
 }
