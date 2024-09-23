@@ -22,11 +22,19 @@ export class IdentityService implements IIdentityService {
       },
     });
   }
-  findByIdAsync(userId: string): Promise<User | null> {
-    throw new Error("Method not implemented.");
+  async findByIdAsync(userId: string): Promise<User | null> {
+    return await this.em.findOne(User, {
+      where: {
+        id: userId,
+      },
+    });
   }
-  findByEmailAsync(email: string): Promise<User | null> {
-    throw new Error("Method not implemented.");
+  async findByEmailAsync(email: string): Promise<User | null> {
+    return await this.em.findOne(User, {
+      where: {
+        email: email,
+      },
+    });
   }
   async checkPasswordAsync(user: User, password: string) {
     const userExist = await this.em.findOne(User, {
@@ -36,12 +44,24 @@ export class IdentityService implements IIdentityService {
     });
     return await bcrypt.compare(password, userExist.passwordHash);
   }
-  changePasswordAsync(
+  async changePasswordAsync(
     user: User,
     currentPassword: string,
     newPassword: string,
   ): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    try {
+      const isValidPassword = await this.checkPasswordAsync(
+        user,
+        currentPassword,
+      );
+      if (!isValidPassword) return false;
+      user.passwordHash = await bcrypt.hash(newPassword, 10);
+      await this.em.save(user);
+      return true;
+    } catch (error) {
+      this.logger.error(error);
+      return false;
+    }
   }
   async createUserAsync(user: User, password: string): Promise<boolean> {
     try {
@@ -54,8 +74,19 @@ export class IdentityService implements IIdentityService {
       return false;
     }
   }
-  removeUserAsync(userId: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async removeUserAsync(userId: string): Promise<boolean> {
+    try {
+      const userExist = await this.em.findOne(User, {
+        where: {
+          id: userId,
+        },
+      });
+      await this.em.remove(userExist);
+      return true;
+    } catch (error) {
+      this.logger.error(error);
+      return false;
+    }
   }
   generateEmailConfirmationTokenAsync(user: User): Promise<string> {
     throw new Error("Method not implemented.");

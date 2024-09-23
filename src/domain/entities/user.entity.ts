@@ -5,6 +5,8 @@ import { BaseAuditableEntity } from "../common/base-auditable.entity";
 export class User extends BaseAuditableEntity {
   @Column()
   username: string;
+  @Column()
+  email: string;
   @Column({ nullable: true })
   passwordHash?: string;
 }
