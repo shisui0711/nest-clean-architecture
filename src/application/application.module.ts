@@ -9,8 +9,15 @@ import { LoggerMiddleware } from "./common/middlewares/logger.middleware";
 import { PerformanceMiddleware } from "./common/middlewares/performance.middleware";
 import { InfrastructureModule } from "src/infrastructure/infrastructure.module";
 import { DomainModule } from "src/domain/domain.module";
+import { CreateTodoListHandler } from "./todo-lists/commands/create-todo-list";
+import { RemoveTodoListHandler } from "./todo-lists/commands/remove-todo-list";
 
-export const CommandHandlers = [CreateTodoItemHandler, RemoveTodoItemHandler];
+export const CommandHandlers = [
+  CreateTodoItemHandler,
+  RemoveTodoItemHandler,
+  CreateTodoListHandler,
+  RemoveTodoListHandler,
+];
 export const QueryHandlers = [GetTodoItemPaginationHandler];
 export const EventHandlers = [];
 
@@ -30,6 +37,7 @@ export const EventHandlers = [];
   ],
   exports: [
     InfrastructureModule,
+    DomainModule,
     ...CommandHandlers,
     ...QueryHandlers,
     ...EventHandlers,

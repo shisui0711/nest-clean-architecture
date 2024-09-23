@@ -12,12 +12,12 @@ export class TodoItem extends BaseAuditableEntity {
   @Column({ nullable: true })
   @AutoMap()
   title?: string;
+  @Column({ nullable: true })
+  note?: string;
   @Column()
-  note: string;
-  @Column()
-  priority: PriorityLevel;
-  @Column()
-  reminder: Date;
+  priority: PriorityLevel = PriorityLevel.none;
+  @Column({ nullable: true })
+  reminder?: Date;
   @ManyToOne(() => TodoList, (todoList) => todoList.items)
   list: TodoList;
 }

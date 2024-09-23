@@ -1,6 +1,10 @@
 import { AutomapperProfile, InjectMapper } from "@automapper/nestjs";
 import { createMap, type Mapper } from "@automapper/core";
 import { Injectable } from "@nestjs/common";
+import { TodoItem } from "src/domain/entities/todo-item.entity";
+import { TodoItemDto } from "../models/todo-item.dto";
+import { TodoList } from "src/domain/entities/todo-list.entity";
+import { TodoListDto } from "../models/todo-list.dto";
 
 @Injectable()
 export class MapperProfile extends AutomapperProfile {
@@ -10,7 +14,8 @@ export class MapperProfile extends AutomapperProfile {
 
   override get profile() {
     return (mapper) => {
-      // createMap(mapper, User, UserDto);
+      createMap(mapper, TodoItem, TodoItemDto);
+      createMap(mapper, TodoList, TodoListDto);
     };
   }
 }
