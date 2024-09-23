@@ -1,5 +1,5 @@
 import { Inject, Injectable, Scope } from "@nestjs/common";
-import { IUser } from "src/application/common/interfaces/user.interface";
+import { IUser } from "src/application/common/abtracts/user.abstract";
 import { REQUEST } from "@nestjs/core";
 
 @Injectable({ scope: Scope.REQUEST })

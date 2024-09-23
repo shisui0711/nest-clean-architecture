@@ -10,6 +10,9 @@ export default () => ({
   jwt: {
     secretKey:
       "DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.",
-    expiresIn: 3600, //seconds
+    expiresIn: 3600, //seconds,
+    expiresRefreshIn: 36000,
+    audience: "http://localhost:3000",
+    issuer: "http://localhost:3000",
   },
 });

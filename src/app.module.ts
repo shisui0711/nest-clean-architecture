@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ApplicationModule } from "./application/application.module";
 import { TodoItemController } from "./presentation/controllers/todo-item.controller";
 import { CurrentUser } from "./presentation/services/current-user.service";
-import { IUser } from "./application/common/interfaces/user.interface";
+import { IUser } from "./application/common/abtracts/user.abstract";
 import { TodoListController } from "./presentation/controllers/todo-list.controller";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import configuration from "./presentation/config/configuration";
@@ -11,6 +11,7 @@ import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from "./presentation/security/jwt.guard";
 import { PassportModule } from "@nestjs/passport";
 import { JwtStrategy } from "./presentation/security/jwt.strategy";
+import { AuthController } from "./presentation/controllers/auth.controller";
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { JwtStrategy } from "./presentation/security/jwt.strategy";
       inject: [ConfigService],
     }),
   ],
-  controllers: [TodoItemController, TodoListController],
+  controllers: [TodoItemController, TodoListController, AuthController],
   providers: [
     JwtStrategy,
     {

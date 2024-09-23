@@ -11,12 +11,16 @@ import { InfrastructureModule } from "src/infrastructure/infrastructure.module";
 import { DomainModule } from "src/domain/domain.module";
 import { CreateTodoListHandler } from "./todo-lists/commands/create-todo-list";
 import { RemoveTodoListHandler } from "./todo-lists/commands/remove-todo-list";
+import { SignInHandler } from "./identities/commands/sign-in.command";
+import { SignUpHandler } from "./identities/commands/sign-up.command";
 
 export const CommandHandlers = [
   CreateTodoItemHandler,
   RemoveTodoItemHandler,
   CreateTodoListHandler,
   RemoveTodoListHandler,
+  SignInHandler,
+  SignUpHandler,
 ];
 export const QueryHandlers = [GetTodoItemPaginationHandler];
 export const EventHandlers = [];
