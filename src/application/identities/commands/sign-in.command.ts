@@ -20,11 +20,12 @@ export class SignInHandler
   implements ICommandHandler<SignInCommand, TokenResponse>
 {
   constructor(
-    private readonly identityService: IIdentityService,
-    private readonly jwtService: IJwtService,
-  ) {}
+    private identityService: IIdentityService,
+    private jwtService: IJwtService,
+  ) {
+    console.log("Init");
+  }
   async execute(command: SignInCommand): Promise<TokenResponse> {
-    console.log("jwtService:", this.jwtService);
     const user = await this.identityService.findByNameAsync(command.username);
     if (!user) throw new NotFoundException("User not exists");
     const isValidPassword = await this.identityService.checkPasswordAsync(

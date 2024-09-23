@@ -13,7 +13,9 @@ export class AuthController {
   @AllowAnonymous()
   @Post("sign-in")
   signIn(@Body() body: SignInCommand) {
-    const command = plainToClass(SignInCommand, body);
+    const command = new SignInCommand();
+    command.username = body.username;
+    command.password = body.password;
     return this.commandBus.execute(command);
   }
 

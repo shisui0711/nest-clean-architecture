@@ -37,6 +37,7 @@ export const EventHandlers = [];
     MapperProfile,
     ...CommandHandlers,
     ...QueryHandlers,
+
     ...EventHandlers,
   ],
   exports: [

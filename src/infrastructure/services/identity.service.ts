@@ -5,9 +5,11 @@ import { EntityManager } from "typeorm";
 import * as bcrypt from "bcrypt";
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class IdentityService implements IIdentityService {
+export class IdentityService extends IIdentityService {
   private readonly logger = new Logger(IdentityService.name);
-  constructor(private readonly em: EntityManager) {}
+  constructor(private readonly em: EntityManager) {
+    super();
+  }
 
   getRolesAsync(userId: string): Promise<string[]> {
     throw new Error("Method not implemented.");
