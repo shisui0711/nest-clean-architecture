@@ -1,3 +1,4 @@
+import { Injectable, Scope } from "@nestjs/common";
 import { BaseEntity } from "src/domain/common/base.entity";
 import {
   EntitySubscriberInterface,
@@ -6,6 +7,7 @@ import {
   UpdateEvent,
 } from "typeorm";
 
+@Injectable({ scope: Scope.REQUEST })
 @EventSubscriber()
 export class DispatchDomainEventsSubcriber
   implements EntitySubscriberInterface<BaseEntity>

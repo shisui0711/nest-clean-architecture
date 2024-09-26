@@ -22,9 +22,7 @@ export class SignInHandler
   constructor(
     private identityService: IIdentityService,
     private jwtService: IJwtService,
-  ) {
-    console.log("Init");
-  }
+  ) {}
   async execute(command: SignInCommand): Promise<TokenResponse> {
     const user = await this.identityService.findByNameAsync(command.username);
     if (!user) throw new NotFoundException("User not exists");

@@ -1,11 +1,13 @@
 import { Body, Controller, Delete, Get, Post } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { plainToClass } from "class-transformer";
 import { TodoItemDto } from "src/application/common/models/todo-item.dto";
 import { GetTodoItemPaginationQuery } from "src/application/todo-items/queries/get-todo-item-pagination";
 import { CreateTodoListCommand } from "src/application/todo-lists/commands/create-todo-list";
 import { RemoveTodoListCommand } from "src/application/todo-lists/commands/remove-todo-list";
 
+@ApiBearerAuth()
 @Controller("todo-list")
 export class TodoListController {
   constructor(

@@ -12,6 +12,7 @@ import { IJwtService } from "src/application/common/abtracts/jwt.abstract";
 import { JwtServiceIml } from "./services/jwt.service";
 import { User } from "src/domain/entities/user.entity";
 import { JwtModule } from "@nestjs/jwt";
+import { PresentationModule } from "src/presentation/presentation.module";
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { JwtModule } from "@nestjs/jwt";
     }),
     DomainModule,
     JwtModule,
-    ConfigModule,
+    PresentationModule,
   ],
   providers: [
     {
@@ -43,6 +44,8 @@ import { JwtModule } from "@nestjs/jwt";
       provide: IJwtService,
       useClass: JwtServiceIml,
     },
+    AuditableEntitySubcriber,
+    DispatchDomainEventsSubcriber,
   ],
   exports: [TypeOrmModule, IIdentityService, IJwtService],
 })

@@ -5,18 +5,15 @@ import { IJwtService } from "src/application/common/abtracts/jwt.abstract";
 import { User } from "src/domain/entities/user.entity";
 
 @Injectable()
-export class JwtServiceIml extends IJwtService {
+export class JwtServiceIml implements IJwtService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {
-    console.log(jwtService);
-    super();
-  }
+  ) {}
   async generateAccessToken(user: User) {
     const payload = {
       sub: user.id,
-      role: ["access"],
+      roles: ["access"],
     };
     const token = await this.jwtService.signAsync(payload, {
       audience: this.configService.getOrThrow<string>("jwt.audience"),
@@ -29,7 +26,7 @@ export class JwtServiceIml extends IJwtService {
   async generateRefreshToken(user: User) {
     const payload = {
       sub: user.id,
-      role: ["access"],
+      roles: ["access"],
     };
     const token = await this.jwtService.signAsync(payload, {
       audience: this.configService.getOrThrow<string>("jwt.audience"),

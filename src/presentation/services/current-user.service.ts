@@ -1,13 +1,9 @@
-import { Inject, Injectable, Scope } from "@nestjs/common";
+import { Injectable, Scope } from "@nestjs/common";
 import { IUser } from "src/application/common/abtracts/user.abstract";
-import { REQUEST } from "@nestjs/core";
 
-@Injectable({ scope: Scope.REQUEST })
-export class CurrentUser extends IUser {
-  constructor(@Inject(REQUEST) private readonly request: Request) {
-    super();
-  }
-  getCurrentUser(): string {
-    throw new Error("Method not implemented.");
+@Injectable({ scope: Scope.TRANSIENT })
+export class CurrentUser implements IUser {
+  getCurrentUser(): string | null {
+    return "Test";
   }
 }

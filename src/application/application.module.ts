@@ -13,6 +13,7 @@ import { CreateTodoListHandler } from "./todo-lists/commands/create-todo-list";
 import { RemoveTodoListHandler } from "./todo-lists/commands/remove-todo-list";
 import { SignInHandler } from "./identities/commands/sign-in.command";
 import { SignUpHandler } from "./identities/commands/sign-up.command";
+import { PresentationModule } from "src/presentation/presentation.module";
 
 export const CommandHandlers = [
   CreateTodoItemHandler,
@@ -32,12 +33,12 @@ export const EventHandlers = [];
     }),
     DomainModule,
     InfrastructureModule,
+    PresentationModule,
   ],
   providers: [
     MapperProfile,
     ...CommandHandlers,
     ...QueryHandlers,
-
     ...EventHandlers,
   ],
   exports: [

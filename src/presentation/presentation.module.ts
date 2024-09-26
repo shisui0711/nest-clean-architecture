@@ -1,25 +1,26 @@
-import { Module } from "@nestjs/common";
-import { ApplicationModule } from "./application/application.module";
-import { TodoItemController } from "./presentation/controllers/todo-item.controller";
-import { CurrentUser } from "./presentation/services/current-user.service";
-import { IUser } from "./application/common/abtracts/user.abstract";
-import { TodoListController } from "./presentation/controllers/todo-list.controller";
+import { Global, Module } from "@nestjs/common";
+import { TodoItemController } from "./controllers/todo-item.controller";
+import { CurrentUser } from "./services/current-user.service";
+import { IUser } from "../application/common/abtracts/user.abstract";
+import { TodoListController } from "./controllers/todo-list.controller";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import configuration from "./presentation/config/configuration";
+import configuration from "./config/configuration";
 import { JwtModule } from "@nestjs/jwt";
 import { APP_GUARD } from "@nestjs/core";
-import { JwtAuthGuard } from "./presentation/security/jwt.guard";
+import { AuthGuard } from "./security/jwt.guard";
 import { PassportModule } from "@nestjs/passport";
-import { JwtStrategy } from "./presentation/security/jwt.strategy";
-import { AuthController } from "./presentation/controllers/auth.controller";
+import { AuthController } from "./controllers/auth.controller";
+import { CqrsModule } from "@nestjs/cqrs";
 
+@Global()
 @Module({
   imports: [
-    ApplicationModule,
     ConfigModule.forRoot({
       load: [configuration],
+      isGlobal: true,
     }),
     PassportModule,
+    CqrsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -33,15 +34,15 @@ import { AuthController } from "./presentation/controllers/auth.controller";
   ],
   controllers: [TodoItemController, TodoListController, AuthController],
   providers: [
-    JwtStrategy,
     {
       provide: IUser,
       useClass: CurrentUser,
     },
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: AuthGuard,
     },
   ],
+  exports: [{ provide: IUser, useClass: CurrentUser }],
 })
-export class AppModule {}
+export class PresentationModule {}
